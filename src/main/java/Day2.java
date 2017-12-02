@@ -1,6 +1,26 @@
+import java.util.Arrays;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 public class Day2 {
+
+    static int solve1(final String matrix) {
+        return solve(matrix, Day2::maxDelta);
+    }
+
+    static int solve2(final String matrix) {
+        return solve(matrix, Day2::evenDivision);
+    }
+
+    private static int solve(final String matrix, final Function<int[], Integer> function) {
+        final String[] rows = matrix.split("\n");
+        int sum = 0;
+        for (final String row : rows) {
+            sum += function.apply(extractNumbers(row));
+        }
+        return sum;
+    }
+
     static int maxDelta(final int[] numbers) {
         int min = Integer.MAX_VALUE;
         int max = 0;
@@ -15,13 +35,15 @@ public class Day2 {
         return max - min;
     }
 
-    static int solve(final String matrix) {
-        final String[] rows = matrix.split("\n");
-        int sum = 0;
-        for (final String row : rows) {
-            sum += maxDelta(extractNumbers(row));
+    static int evenDivision(final int[] numbers) {
+        for (final int a : numbers) {
+            for (final int b : numbers) {
+                if (a != b && a % b == 0) {
+                    return a / b;
+                }
+            }
         }
-        return sum;
+        throw new RuntimeException("Could not find an even division for " + Arrays.toString(numbers));
     }
 
     static int[] extractNumbers(final CharSequence numbers) {
