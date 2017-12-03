@@ -5,7 +5,11 @@ apply plugin: 'jacoco'
 
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
+        jcenter()
+
+        maven { url "http://repo1.maven.org/maven2/" }
     }
     dependencies {
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
@@ -25,17 +29,9 @@ compileTestJava {
     options.compilerArgs += '-parameters'
 }
 
-//jacoco {
-//    toolVersion = "0.7.9"
-//}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-//        xml.destination "${buildDir}/reports/jacoco/report.xml"
-        html.enabled true
-//        csv.enabled false
-    }
+jacoco {
+    toolVersion = "0.7.9"
+    applyTo junitPlatformTest
 }
 
 dependencies {
@@ -47,6 +43,17 @@ dependencies {
 
     // Only needed to run tests in an (IntelliJ) IDE(A) that bundles an older version
     testRuntime("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")
+}
+
+// Generate code coverage reports ... run with jacoco
+jacocoTestReport{
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+    reports {
+        xml.enabled true
+//        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        html.enabled false
+    }
+    executionData = files('build/jacoco/junitPlatformTest.exec')
 }
 
 check.dependsOn jacocoTestReport
