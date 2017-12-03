@@ -27,7 +27,7 @@ compileTestJava {
 
 jacoco {
     toolVersion = "0.7.9"
-    reportsDir = file("$buildDir/jacoco")
+    reportsDir = file("$buildDir/reports/jacoco/report.xml")
 }
 
 jacocoTestReport {
