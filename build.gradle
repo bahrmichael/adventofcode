@@ -25,15 +25,16 @@ compileTestJava {
     options.compilerArgs += '-parameters'
 }
 
-jacoco {
-    toolVersion = "0.7.9"
-    reportsDir = file("$buildDir/reports/jacoco/report.xml")
-}
+//jacoco {
+//    toolVersion = "0.7.9"
+//}
 
 jacocoTestReport {
     reports {
         xml.enabled true
+//        xml.destination "${buildDir}/reports/jacoco/report.xml"
         html.enabled false
+//        csv.enabled false
     }
 }
 
