@@ -1,10 +1,13 @@
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Day4 {
 
-    static boolean isValid(final String phrase) {
+    static Function<String, Boolean> isValid1 = phrase -> {
         final Collection<String> words = new HashSet<>();
         for (final String word : phrase.split(" ")) {
             if (words.contains(word)) {
@@ -13,10 +16,26 @@ public class Day4 {
             words.add(word);
         }
         return true;
+    };
+
+    static Function<String, Boolean> isValid2 = phrase -> {
+        final Collection<String> words = new HashSet<>();
+        for (final String word : phrase.split(" ")) {
+            final String sorted = sortLetters(word);
+            if (words.contains(sorted)) {
+                return false;
+            }
+            words.add(sorted);
+        }
+        return true;
+    };
+
+    private static String sortLetters(final String word) {
+        return Stream.of(word.split("")).sorted().collect(Collectors.joining());
     }
 
-    static int countValidPhrases(final String phrases) {
-        return Arrays.stream(phrases.split("\n")).mapToInt(p -> isValid(p) ? 1 : 0).sum();
+    static int countValidPhrases(final String phrases, final Function<String, Boolean> validator) {
+        return Arrays.stream(phrases.split("\n")).mapToInt(p -> validator.apply(p) ? 1 : 0).sum();
     }
 
     static final String PUZZLE = "una bokpr ftz ryw nau yknf fguaczl anu\n"
