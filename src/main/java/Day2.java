@@ -13,17 +13,13 @@ public class Day2 {
     }
 
     private static int solve(final String matrix, final Function<int[], Integer> function) {
-        final String[] rows = matrix.split("\n");
-        int sum = 0;
-        for (final String row : rows) {
-            sum += function.apply(extractNumbers(row));
-        }
-        return sum;
+        return Arrays.stream(matrix.split("\n")).mapToInt(row -> function.apply(extractNumbers(row))).sum();
     }
 
     static int maxDelta(final int[] numbers) {
         int min = Integer.MAX_VALUE;
         int max = 0;
+
         for (final int number : numbers) {
             if (number < min) {
                 min = number;
