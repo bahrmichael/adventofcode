@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 
 public class Day2 {
 
@@ -13,7 +12,7 @@ public class Day2 {
     }
 
     private static int solve(final String matrix, final Function<int[], Integer> function) {
-        return Arrays.stream(matrix.split("\n")).mapToInt(row -> function.apply(extractNumbers(row))).sum();
+        return Arrays.stream(matrix.split("\n")).mapToInt(row -> function.apply(Util.extractNumbers(row, "\t"))).sum();
     }
 
     static int maxDelta(final int[] numbers) {
@@ -40,15 +39,6 @@ public class Day2 {
             }
         }
         throw new RuntimeException("Could not find an even division for " + Arrays.toString(numbers));
-    }
-
-    static int[] extractNumbers(final CharSequence numbers) {
-        final String[] split = Pattern.compile("\t").split(numbers);
-        final int[] result = new int[split.length];
-        for (int i = 0; i < split.length; i++) {
-            result[i] = Integer.parseInt(split[i]);
-        }
-        return result;
     }
 
     public static final String NUMBERS = "1640\t590\t93\t958\t73\t1263\t1405\t1363\t737\t712\t1501\t390\t68\t1554"
