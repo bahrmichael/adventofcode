@@ -12,6 +12,12 @@ class Day6Test {
     @Test
     void solve() {
         System.out.println("1: " + Day6.solve1(Day6.PUZZLE));
+        System.out.println("2: " + Day6.solve2(Day6.PUZZLE));
+    }
+
+    @Test
+    void solve2() {
+        assertEquals(4, Day6.solve2("2\t4\t1\t2"));
     }
 
     @ParameterizedTest

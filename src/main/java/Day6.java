@@ -5,10 +5,6 @@ import java.util.HashSet;
 public class Day6 {
 
     static int solve1(final CharSequence text) {
-        return solve(text);
-    }
-
-    private static int solve(final CharSequence text) {
         final Collection<String> seenConfigurations = new HashSet<>();
         int[] array = Util.extractNumbers(text, "\t");
 
@@ -17,11 +13,42 @@ public class Day6 {
             if (seenConfigurations.contains(str)) {
                 return seenConfigurations.size();
             }
-
-            array = redistribute(array);
-
-            seenConfigurations.add(str);
+            array = nextStep(seenConfigurations, array, str);
         }
+    }
+
+    static int solve2(final CharSequence text) {
+        Collection<String> seenConfigurations = new HashSet<>();
+        int[] array = Util.extractNumbers(text, "\t");
+
+        int startLoop;
+        while (true) {
+            final String str = Arrays.toString(array);
+            if (seenConfigurations.contains(str)) {
+                startLoop = seenConfigurations.size() - 1;
+                seenConfigurations = new HashSet<>();
+                break;
+            }
+            array = nextStep(seenConfigurations, array, str);
+        }
+
+        int endLoop;
+        while (true) {
+            final String str = Arrays.toString(array);
+            if (seenConfigurations.contains(str)) {
+                endLoop = startLoop + seenConfigurations.size() -1 ;
+                break;
+            }
+            array = nextStep(seenConfigurations, array, str);
+        }
+
+        return endLoop - startLoop + 1;
+    }
+
+    private static int[] nextStep(final Collection<String> seenConfigurations, int[] array, final String str) {
+        array = redistribute(array);
+        seenConfigurations.add(str);
+        return array;
     }
 
     static int[] redistribute(final int[] array) {
